@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+
+package stock;
+
+service StockService {
+    rpc GetStockData (StockRequst) returns (StockResponse);
+}
+
+message StockRequst{
+    string symbol = 1;
+}
+
+message StockData{
+    string symbol = 1;
+    string date = 2;
+    float open = 3;
+    float high = 4;
+    float low = 5;
+    float close =6;
+}
+
+message StockResponse{
+    repeated StockData data =1;
+}
