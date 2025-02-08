@@ -4,22 +4,18 @@ syntax = "proto3";
 package stock;
 
 service StockService {
-    rpc GetStockData (StockRequst) returns (StockResponse);
+    rpc GetStockDataStream (StockRequest) returns (stream StockData);
 }
 
-message StockRequst{
+message StockRequest{
     string symbol = 1;
 }
 
 message StockData{
     string symbol = 1;
-    string date = 2;
+    string datetime = 2;
     float open = 3;
     float high = 4;
     float low = 5;
     float close =6;
-}
-
-message StockResponse{
-    repeated StockData data =1;
 }

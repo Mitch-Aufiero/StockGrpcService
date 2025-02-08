@@ -14,4 +14,4 @@ RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. stock.pro
 #standard gprc port
 EXPOSE 50051
 
-CMD ["sleep","infinity"]
+CMD ["python","-u","server.py"]

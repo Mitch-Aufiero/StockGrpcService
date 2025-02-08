@@ -7,9 +7,9 @@ from concurrent import futures
 from datetime import datetime
 
 
-class StockService(stock_pb2.StockServiceServicer):
-    def StreamStockData(self, request,context):
-        symbol.request.symbol
+class StockService(stock_pb2_grpc.StockServiceServicer):
+    def GetStockDataStream(self, request,context):
+        symbol = request.symbol
         #setting random starting price
         price = random.uniform(100,200) 
 
@@ -19,11 +19,11 @@ class StockService(stock_pb2.StockServiceServicer):
             price = price + change
             high = price + random.uniform(0,5)
             low =  price - random.uniform(0,5)
-            close = high + low / 2
+            close = (high + low) / 2
 
             stock_data = stock_pb2.StockData(
                 symbol = symbol,
-                timestamp = datetime.now(),
+                datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 open=price,
                 high = high,
                 low = low,
@@ -35,9 +35,10 @@ class StockService(stock_pb2.StockServiceServicer):
             time.sleep(.5)
 
 def serve():
+    print("StockStreamService is booting up...")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=5)) #not sure if I need any other params here yet since they're optional
-    stock_pb2_grpc.add_StockServicer_to_server(StockService(), server)
-    server.add_insecure_port("50051")
+    stock_pb2_grpc.add_StockServiceServicer_to_server(StockService(), server)
+    server.add_insecure_port("0.0.0.0:50051")
 
     server.start()
     print("StockStreamService starting on port 50051")
@@ -46,6 +47,7 @@ def serve():
 
 
 if __name__=="__main__":
+    print("howdy")
     serve()
 
 
