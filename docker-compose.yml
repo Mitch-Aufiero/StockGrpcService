@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  stockstreamservice:
+    build:
+      context: ./StockStreamService
+    container_name: stockstreamservice
+    ports:
+      - "50051:50051"
+    networks:
+      - mynetwork
+
+  envoy:
+    build:
+      context: ./EnvoyProxy
+    container_name: envoy
+    ports:
+      - "8080:8080"   # HTTP to  gRPC
+      - "9901:9901"   # Envoy admin interface
+    volumes:
+      - ./EnvoyProxy/envoy.yaml:/etc/envoy/envoy.yaml
+    depends_on:
+      - stockstreamservice
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
