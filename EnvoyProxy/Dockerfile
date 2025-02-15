@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:v1.33-latest
+FROM envoyproxy/envoy-dev:e4955aed5694f9935d674419dbb364e744f697b4
 
 COPY envoy.yaml /etc/envoy/envoy.yaml
 COPY proto.pb /etc/envoy/proto.pb
